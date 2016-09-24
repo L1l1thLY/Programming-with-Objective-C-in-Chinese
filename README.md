@@ -12,7 +12,7 @@ This is a Chinese version of Programming with Objective-C that is translated by 
 | --- | --- | --- |
 | 0.1 | Chibaibuki | 2016-09-22  |
 ##章节认领情况
-原文地址：https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html#//apple_ref/doc/uid/TP40011210-CH1-SW1
+[原文地址](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html#//apple_ref/doc/uid/TP40011210-CH1-SW1)
 
 | 章节 | 认领者  |  
 | --- | --- | 
