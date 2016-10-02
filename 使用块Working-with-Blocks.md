@@ -198,5 +198,84 @@ Value of original variable is now: 100
 }
 ```
 
+一个接受带参数`block`的方法这么写。
 
+```
+- (void)doSomethingWithBlock:(void (^)(double, double))block {
+    ...
+    block(21.0, 2.0);
+}
+```
+
+###Block应该作为一个方法的最后一个参数
+最好一个方法只接受至多一个`block`参数。如果方法也接受其他不是`block`的参数，`block`应该成为最后一个参数。
+
+```
+- (void)beginTaskWithName:(NSString *)name completion:(void(^)(void))callback;
+```
+
+这样写，当你内嵌形式去定义一个`block`时，会让你的方法调用更加容易看懂：
+
+```
+[self beginTaskWithName:@"MyTask" completion:^{
+        NSLog(@"The task is complete");
+    }];
+```
+
+##使用类型定义（Type Definition）简化定义Block的语法
+如果你需要定义多个拥有相同signature的`block`，那么就为了这个signature定义一个你自己的类型吧。
+举个例子，你可以为一个既不接受数值也不返回数值的`block`定义一个类型，就像这样：
+
+```
+typedef void (^XYZSimpleBlock)(void);
+```
+
+你可以使用在创建一个变量或者限定方法接受的参数类型时候使用这个自定义类型：
+
+```
+    XYZSimpleBlock anotherBlock = ^{
+        ...
+    };
+```
+
+```
+- (void)beginFetchWithCallbackBlock:(XYZSimpleBlock)callbackBlock {
+    ...
+    callbackBlock();
+}
+```
+
+当你使用接受一个`block`或者返回一个`block`的`block`的时候，自定义类型就非常有用了。看看下面这个例子：
+
+```
+void (^(^complexBlock)(void (^)(void)))(void) = ^ (void (^aBlock)(void)) {
+    ...
+    return ^{
+        ...
+    };
+};
+```
+
+这个`complexBlock`变量引用了一个接受另一个`block`作为参数并且返回另一个`block`的`block`。  
+那么用自定义类型来重写这段代码就更容易看清了：
+
+```
+XYZSimpleBlock (^betterBlock)(XYZSimpleBlock) = ^ (XYZSimpleBlock aBlock) {
+    ...
+    return ^{
+        ...
+    };
+};
+```
+
+##给对象添加block属性
+给对象添加一个Block属性和定义一个变量非常类似：
+
+```
+@interface XYZObject : NSObject
+@property (copy) void (^blockProperty)(void);
+@end
+```
+
+>注意：因为一个`block`需要被复制一份去保持它的赋予`block`属性一个`copy`*附加属性*，
 
