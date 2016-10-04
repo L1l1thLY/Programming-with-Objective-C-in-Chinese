@@ -16,10 +16,10 @@ This is a Chinese version of Programming with Objective-C that is translated by 
 
 | 章节 | 认领者  |  
 | --- | --- | 
-| Introduction-介绍 |  |
-|   Defining-Classes-定义类||
-|Working-with-Objects-对象的使用||
-|Encapsulating-Data-数据的封装||
+| Introduction-介绍 | yaoyaoi |
+|   Defining-Classes-定义类|caoxian|
+|Working-with-Objects-对象的使用|Bomlsy|
+|Encapsulating-Data-数据的封装|Chibaibuki|
 |Customizing-Existing-Classes-定制已有的类||
 |Working-with-Protocols-协议的使用||
 |Values-and-Collections-值与集合类型||
