@@ -1,4 +1,73 @@
 #关于 Objective-C
-Objective-C是你写OS X（maxOS）程序和iOS程序的首选语言。它作为C语言的一个超集（即C语言是它的一部分）提供了面对对象的特性和动态运行时`runtime`。它继承了C语言的语法，基本类型，和控制流并加入了定义`类`和`方法`的语法。他提供了`动态类型`和`动态绑定`，同时对`对象图`管理，`object literals`（极其方便地定义数组等对象的方法——一个语法糖） 提供了语言层面上的支持。
+Objective-C是你写OS X（maxOS）程序和iOS程序的首选语言。它作为C语言的一个超集（即C语言是它的一部分）提供了面对对象的特性和动态运行时`runtime`。它继承了C语言的语法，基本类型，和控制流并加入了定义`类`和`方法`的语法。他提供了`动态类型`和`动态绑定`，同时对`对象图`管理，`object literals`（极其方便地定义数组等对象的方法——一个语法糖） 提供了语言层面上的支持。  
 
+## 概述
+这个文档引入了大量的用法例程来介绍Objective-C语言。你将会学到如何创建你自己的类来描述自定义对象和怎样使用`Cocoa`和`Cocoa Touch`提供的一些框架类。尽管这些框架类是和语言分离的，他们的用法还是与Objective-C和许多依赖这些类提供的行为的语言级特性密不可分。  
 
+### 程序是从一个对象网络构建的
+当你为OS X和iOS构建程序时，你会在对象上面投入更多的时间。这些对象是Objective-C类的实例。这些类可以是由`Cocoa`或`Cocoa Touch`提供的，也可以是你自己写的类。  
+如果你要写你自己的类，要在开始处提供对这个类的描述，详细写出它的`public interface`。`interface`包括数据封装的`公共特性``public properties`,和一系列的`方法`。方法声明是指，一个对象可以收到的信息，包括当使用这个方法时所需要参数。你还需要在`interface`中提供一个类的实现`implementation`，包括每一个你公开的方法的可执行代码。
+
+> 相关章节：[定义类Defining Classes]()，[对象的使用Working with Objects](), [数据的封装Encapsulating Data]() 
+
+### 用类别`Categories`扩展已经存在的类
+
+如果你想要给一个已存在的类添加很少的特性，最好不要构建一个全新的类。更好的方法是定义一个类别`category`来给一个已经存在的类添加自定义特性。你可以用类别来给任何一个类添加方法，甚至那些你并没有原始的`implementation`代码的类，比如像`Nsstring`这样的框架类。  
+
+如果你有你想修改的类的源代码，你可以通过类扩展来添加特性，或者修改原有特性的属性。类扩展一般用于隐藏私有行为，用在只有源代码文件或私有的自定义框架的实现中。  
+
+> 相关章节：[定制已有的类Customizing Existing Classes]()
+  
+### 用协议`protocols`定义信息传输方式  
+大部分Objective-C app 的工作都是由于数据的传输而产生的。这些信息一般是被在类的`interface`中显示声明的方法定义的了。但是，有时候定义一组不直接绑定到某个特定类的相关的方法也是很有用的。  
+
+Objective-C用`protocol`来定义一组相关的方法。例如一个对象调用它的委托`delegate`，这是可选的或者要求的。任何一个类都可以声明它包含这个`protocol`，但是这个类的`implementation`中必须包含所有在这个`protocol`中的方法。  
+
+> 相关章节：[协议的使用Working with Protocols]()
+  
+### Objective-C的对象通常是值`values`和集合`Collections`
+  
+在Objective-C中经常用`Cocoa`和`Cocoa Touch`类来代表值。类`Nesstring`
+用于字符串；类`NSNumber`用于不同类型的数字，包括整数，浮点数等等；类`NSValue`用于其他的值，比如C的结构体。一还可以是也任何C中的原始类型，比如`int`，`float`，`char`。  
+
+集合通常是一个集合类的实例，比如集合类`NSArray`,`NSSet`,`NSDictionary`。这些集合类都是其他Objective-C对象的实例。
+  
+> 相关章节：[值与集合类型Values and Collections]()
+  
+### 块`blocks`简化了一般的任务  
+
+块`Blocks`是C，Objective-C和C++的一个语言特性，用来表示一个工作单元。Blocks压缩一块代码和它被捕获的状态，这使它们更像是其他编程语言中的闭包`closures`。块`Blocks`经常用于简化一般的任务，比如枚举集合，分类和测试。Blocks还能更容易地使用中央调度等技术(GCD)安排任务并发或异步执行。  
+
+> 相关章节：
+[使用块Working with Blocks](https://github.com/L1l1thLY/Programming-with-Objective-C-in-Chinese/blob/master/使用块Working-with-Blocks.md).
+
+   
+### 错误对象用在运行时错误中
+  
+虽然Objective-C语法中包含异常`exceptiong`处理，但`Cocoa` and `Cocoa Touch`只在处理编程错误（比如数组越界访问）时提示异常。这些错误应该在你的app上架之前解决。  
+  
+其他的一切包含错误`error`的运行时问题，比如耗尽磁盘空间，或者连不上一个网页。这些问题都是由类`NsError`的实例来显示的。为了良好的用户体验，你应该提前预判这些可能发生的错误，并且在错误发生时提供最好的解决方案给用户。  
+  
+> 相关章节：[错误处理Dealing with Errors]()
+  
+### Objective-C编程应遵守命名规则
+  
+当你在进行Objective-C编程时，你应当记住一些已建立的命名规则。比如开始以小写字母开头,使用驼峰式大小写多个单词来命名一个方法，例如，`doSomething`或者`doSomethingElse`。并不只是大写一些字母很重要。重要的是尽可能的让你的代码有更好可读性。这就意味着，你的方法名要很有表现力，但是不能太冗长。
+  
+> 相关章节： [命名规则Conventions]()  
+
+## 预备知识
+  
+如果你是iOS或者OS X开发的新手，你在看这篇文档之前应该先通过看*Start Developing iOS Apps Today*或者*Start Developing Mac Apps Today*来了解开发iOS和OS X应用程序的一般过程。另外，为了完成每一章节后面的练习，你应该熟悉Xcode的使用方法。Xcode 是开发iOS和OS X应用程序的集成开发环境(IDE，Integrated Development Environment)。你将会用它来写你的代码，设计你app的用户界面，测试你的应用程序，并且调试任何的问题。  
+  
+尽管有一定的C语言基础或者其中一种以C语言为基础的语言的基础，例如Java或者C#，会更好，这个文档确实包含一些内联的基础C语言特性的例程，比如流程控制语句。如果你有其他高级编程语言的基础，比如Ruby或者Python，你应该可以看懂这个文档的内容。
+  
+这篇文档合理的包含了一些面对对象编程的原则，尤其是那些适用于Objective-C环境的，但是，你至少要有一点基础的面对对象的观念。如果你不熟悉这些观点，你应该读一下相关章节[*Concepts in Objective-C Programming*](https://developer.apple.com/library/content/documentation/General/Conceptual/CocoaEncyclopedia/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010810)。
+  
+## 其他
+  
+这篇文章的内容适用于Xcode4.4和它以后的版本，并且我们假定你的目标是OS Xv10.7或者更新的版本。想要了解更多有关Xcode的知识，请移步[*Xcode Overview*](https://developer.apple.com/library/content/documentation/ToolsLanguages/Conceptual/Xcode_Overview/index.html#//apple_ref/doc/uid/TP40010215)。想知道关于语言特性的可用性，请看[*Objective-C Feature Availability Index*](https://developer.apple.com/library/content/releasenotes/ObjectiveC/ObjCAvailabilityIndex/index.html#//apple_ref/doc/uid/TP40012243)。 
+  
+Objective-C apps 用引用计数的方法来决定一个对象的声明周期。大多数情况下，编译器的自定引用计数（ARC）功能会帮你管理好这些。如果你觉得在某些情况下用ARC并不好，或者需要转换或者维护关系到对象储存的遗留代码，你应该读[*Advanced Memory Management Programming Guide*](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/MemoryMgmt.html#//apple_ref/doc/uid/10000011i)。  
+  
+除了编译器，Objective-C语言用一种运行时系统来支持它的动态性和面向对象性。虽然你不需要经常关心Objective-C是如何运作的，你还是可以直接与这个运行时系统交互，通过学习[*Objective-C Runtime Programming Guide*](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40008048)和[*Objective-C Runtime Reference*](https://developer.apple.com/reference/objectivec/1657527-objective_c_runtime)。
