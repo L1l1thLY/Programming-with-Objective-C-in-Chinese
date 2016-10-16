@@ -1,10 +1,13 @@
 # Programming-with-Objective-C-in-Chinese
 
 This is a Chinese version of Programming with Objective-C that is translated by Innovation Studio iOS Group in USETC. 苹果开发者平台Objective-C文档的中文翻译版本，翻译者来自电子科技大学创联工作室iOS组。
+##工程进行中，非正式版本请切换至`dev`分支
 ##贡献者:
 - Chibaibuki XiangfuGoh
 - Caoxian HaoxianChan
 - Bomlsy SiyuLiao 
+- Yaoyaoi JianyunWu
+- QiqiYang
 
 # 须知
 ##版本控制
