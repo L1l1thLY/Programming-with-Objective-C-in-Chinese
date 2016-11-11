@@ -27,8 +27,8 @@
 默认情况下，编译器会为你自动生成这些存取方法，所以你除了在类接口处使用`@property`来声明一个属性之外什么都不需要做。  
 自动生成存取方法采取以下命名规则：
 
--  用来获得属性值的方法（ *获取方法* ）和属性的名字一模一样。`firstName`属性的获取方法也被叫做`firstName`。
--  用来设置一个属性的值的方法（ *储存方法* ）是以`set`开头的，并且跟上首字母大写的属性名。`firstName`属性的存储方法被叫做`setFirstName`。
+-  用来获得属性值的方法（ *getter方法* ）和属性的名字一模一样。`firstName`属性的获取方法也被叫做`firstName`。
+-  用来设置一个属性的值的方法（ *setter方法* ）是以`set`开头的，并且跟上首字母大写的属性名。`firstName`属性的存储方法被叫做`setFirstName`。
 
 如果想禁止属性被存取方法修改，你应在声明属性的时候为它添加一个 *特征 attribute* ，比如下面这个特征标明了这个属性是 *只读readonly* 的：
 
@@ -54,7 +54,7 @@
 ```
 
 在这个例子里，编译器只会生成一个`isFinished`方法而不是生成一个`setFinished:`方法。
->注意：一般来说，属性存取方法【】
+>注意：一般来说，属性存取方法是服从（Key-Value Coding）KVC，这也意味着这些属性也遵从这复杂的名称转换规则，若想详细了解请查阅 [Key-Value Coding Programming Guide](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/KeyValueCoding/index.html#//apple_ref/doc/uid/10000107i) 。
 
 ###点语法让存取方法的调用更加简洁
 除了精确地调用存取方法，Objective-C还提供了一种方法——点语法，去操作一个对象的属性。  
@@ -65,7 +65,7 @@ NSString *firstName = somePerson.firstName;
 somePerson.firstName = @"Johnny";
 ```
 
-点语法只是对存取方法做了一个方便的包装（语法糖）。实际上你使用点语法的时候，依然是通过上面提到的存取方法来获得属性或者设置属性的值的：
+点语法只是对存取方法做了一个方便的包装。实际上你使用点语法的时候，依然是通过上面提到的存取方法来获得属性或者设置属性的值的：
 
 - 使用`somePerson.firstName`来获得属性的值和使用`[somePerson firstName]`完全一致。
 - 通过类似`somePerson.firstName = @"Johnny`的语法来设置属性的值和使用`[somePerson setFirstName:@"Johnny"]`完全一致。
@@ -73,7 +73,89 @@ somePerson.firstName = @"Johnny";
 这也就是说，无论你直接调用属性存取方法还是使用点语法，属性特征依然控制着属性存取方法。如果你为属性设置了`readonly`特征，当你使用点语法来为属性设置值的时候编译器会报错。
 ###所有的属性背后都存在着一个实例变量
 
-【】
-实例变量是指在对象的整个生命周期存在并保存值的变量。为实例变量分配的内存会在为对象分配内存时（通过`alloc`)分配，而在对象生命周期结束被释放的时候被释放。  
+默认情况下，一个可读可写的（readwrite）的属性将会拥有着一个对应的 *实例变量（instance variables）* ，这个变量也会被编译器自动生成（synthesized）。  
+
+实例变量是指在对象的整个生命周期存在并保存他本身的值的变量。当你在为对象分配内存时（通过`alloc`)，这些变量的内存也会被分配，而在对象生命周期结束时，对象占用的内存被释放，这些实例变量也就随之被释放了。  
+
+如果你没有特意规定的话，自动生成的实例变量和它对应属性的名字是相同的，但是前面会带上一个下划线。比如说一个叫做`firstName`的属性，自动生成的实例变量将会被叫做`_firstName`。  
+
+虽然利用存取方法或者点语法来操作一个对象中的属性是比较合适的，但是在类实现中的任何一个方法都可以直接操作实例变量。一个下划线开头让你能够清楚地看到，你操作的是一个实例变量，而不是其他的，比如说一个局部变量：  
+
+```
+- (void)someMethod {
+    NSString *myString = @"An interesting string";
+ 
+    _someString = myString;
+}
+```
+
+在这个例子里，我们能够清晰地看到，`myString`是一个局部变量，而`_someString`是一个实例变量。  
+
+一般来讲我们会遵守一个规则，即使是这种情况下——在一个对象的方法实现中去访问一个实例变量，仍然应该使用存取方法或者点语法。这个时候你应该使用`self`：
+
+```
+- (void)someMethod {
+    NSString *myString = @"An interesting string";
+ 
+    self.someString = myString;
+  // or
+    [self setSomeString:myString];
+    }
+```
+
+但是，当你写一个对象的初始化、释放空间或者自定义一个存取方法的时候，就不再遵守这个规则了，我们会在之后描述相关内容。  
+
+####你可以定制自动生成的实例变量的名字
+
+我们之前提到，根据属性自动生成的实例变量的默认名字为下划线加属性名`_propertyName`。  
+如果你想要这些实例变量拥有不同的名字，你需要在类实现中这样命令编译器：
+
+```
+@implementation YourClass
+@synthesize propertyName = instanceVariableName;
+...
+@end
+```
+ 
+ 比如说：
+ 
+ ```
+ @synthesize firstName = ivar_firstName;
+ ```
+ 
+ 在这个情况下，属性仍然还是叫`firstName`的，使用点语法和存取方法的情况下，你仍然能够通过`firstName`和`setFirstName`访问它，但是他对应的实例变量名字为`ivar_fisrtName`。  
+ 
+ >重要：如果你使用了`@synthesize`却没有为其规定一个实例变量名，像这样：
+ 
+ ```
+ @synthesize firstName;
+ ```
+> 实例变量的名字将会和属性 *相同* ，为`firstName`，没有下划线。
+
+####你可以不通过属性来定义一些实例变量
+
+最好是无论何时你的对象需要追踪一个值或其他对象的时候，都使用一个属性。  
+
+如果你需要不声明一个属性就定义一个实例变量的话，你可以把它们放在一对花括号中，这对花括号需要位于类接口部分或实例部分顶部，像这样：
+
+```
+@interface SomeClass : NSObject {
+    NSString *_myNonPropertyInstanceVariable;
+}
+...
+@end
+ 
+@implementation SomeClass {
+    NSString *_anotherCustomInstanceVariable;
+}
+...
+@end
+```
+
+>注意：你也可以在类拓展处增加实例变量，详情请看：[Class Extensions Extend the Internal Implementation.
+](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/CustomizingExistingClasses/CustomizingExistingClasses.html#//apple_ref/doc/uid/TP40011210-CH6-SW3)
+
+### 在初始化方法中直接访问实例变量
+setter方法会导致一些副作用。它可能会触发KVC通知，
 
 
