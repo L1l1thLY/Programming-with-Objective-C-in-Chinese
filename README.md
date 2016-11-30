@@ -6,7 +6,7 @@ This is a Chinese version of Programming with Objective-C that is translated by 
 - Chibaibuki XiangfuGoh
 - Caoxian HaoxianChan
 - Bomlsy SiyuLiao 
-- Yaoyaoi JianyunWu
+- tinoryj YanjingRen
 - QiqiYang
 
 # 须知
@@ -14,19 +14,21 @@ This is a Chinese version of Programming with Objective-C that is translated by 
 | 版本 | 修改者 | 时间 |
 | --- | --- | --- |
 | 0.1 | Chibaibuki | 2016-09-22  |
+|0.2| Chibaibuki | 2016-11-30|
+
 ##章节认领情况
 
 | 章节 | 认领者  |  
 | --- | --- | 
-| Introduction-介绍 |  |
-|   Defining-Classes-定义类||
-|Working-with-Objects-对象的使用||
-|Encapsulating-Data-数据的封装||
-|Customizing-Existing-Classes-定制已有的类||
-|Working-with-Protocols-协议的使用||
-|Values-and-Collections-值与集合类型||
+| Introduction-介绍 | |
+|   Defining-Classes-定义类|Caoxian|
+|Working-with-Objects-对象的使用|Bomlsy|
+|Encapsulating-Data-数据的封装|Chibaibuki|
+|Customizing-Existing-Classes-定制已有的类|Caoxian|
+|Working-with-Protocols-协议的使用|tinoryj|
+|Values-and-Collections-值与集合类型|tinoryj|
 |Working-with-Blocks-使用块|Chibaibuki|
-|Dealing-with-Errors-错误处理||
+|Dealing-with-Errors-错误处理|Bomlsy|
 |Conventions-命名规则||
 
 ##流程
