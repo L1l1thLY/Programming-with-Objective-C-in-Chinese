@@ -1,6 +1,6 @@
 # 使用Blocks
-一个Objective-C类描述一个包含数据和数据相关动作的对象。有时，也仅仅表示一个单一任务或者一些行为的集合，而不是一个方法的集合。
-*Blocks*是一种语言级别的特性，可以允许你创造一些特定的代码块，并像一个普通变量一样在让它方法或函数中传递。`Blocks`也是一种OC的对象，也可以添加进入`NSArray`或者`NSDictionary`。`Blocks`同时还有 在他的 *封闭作用域* 内 *捕获* 值的能力，就像其他语言的 *闭包* 或 *lambdas式* 。 
+一个Objective-C类描述一个包含数据和数据相关动作的对象。有时，也仅仅表示一个单一任务或者一些行为的集合，而不是一个方法的集合。  
+*Blocks* 是一种语言级别的特性，可以允许你创造一些特定的代码块，并像一个普通变量一样在让它方法或函数中传递。`Blocks`也是一种OC的对象，也可以添加进入`NSArray`或者`NSDictionary`。`Blocks`同时还有 在他的 *封闭作用域* 内 *捕获* 值的能力，就像其他语言的 *闭包* 或 *lambdas式* 。 
 ## Blocks基本语法
 用一个*幂乘符号*`^`来定义一个*块*`Block`。
 
@@ -10,7 +10,7 @@
     }
 ```
 
-和定义一个函数或一个方法类似，用左花括号开始一段代码，并用右花括号结束这段代码。在上面的代码例子里，这个`Block`没有返回任何值，也不接受任何参数。
+和定义一个函数或一个方法类似，用左花括号开始一段代码，并用右花括号结束这段代码。在上面的代码例子里，这个`Block`没有返回任何值，也不接受任何参数。  
 就如同你可以用一个指针去 *引用*（指向） 一个C语言函数，你可以声明一个变量来跟踪一个`Block`，就像这样：
 
 ```
@@ -41,7 +41,7 @@
 **注意：当你打算调用一个没有赋值的Block变量（指向nil的变量），你的程序就崩溃啦。**
 
 ### 使用接受参数并且能够返回值的Block
-像函数和方法一样，`Blocks`也可以接受一些参数并且有返回值。
+像函数和方法一样，`Blocks`也可以接受一些参数并且有返回值。  
 举个例子，我们先声明一个能够计算两个数乘积的`Block`，很显然，它应该接受两个`double`值和返回一个`double`值：
 
 ```
@@ -56,7 +56,7 @@
     }
 ```
 
-`firstValue`和`secondValue`代表你调用这个`block`的的时候传入的两个值，就像一个函数定义一样。在这个例子里，返回值的类型是根据`block`内的代码推测出来的。
+`firstValue`和`secondValue`代表你调用这个`block`的的时候传入的两个值，就像一个函数定义一样。在这个例子里，返回值的类型是根据`block`内的代码推测出来的。  
 如果你喜欢，你也可以在`^`和左括号中间精确指定返回值的类型：
 
 ```
@@ -79,7 +79,7 @@
 ```
 
 ### Blocks可以捕获封闭作用域内的值
-除了包含一些可以执行的代码，一个`block`还能捕获 *封闭作用域* 内的值。
+除了包含一些可以执行的代码，一个`block`还能捕获 *封闭作用域* 内的值。  
 如果你在一个方法里面声明了一个`block`，举个例子，这个`block`就可以捕获这个作用域（这里为这个方法内部）的任何量，像这样：
 
 ```
@@ -94,7 +94,7 @@
 }
 ```
 
-在这个例子里，`anInterger`是在`block`外部声明的，但是在这个`block`定义的时候这个值已经被捕获了。
+在这个例子里，`anInterger`是在`block`外部声明的，但是在这个`block`定义的时候这个值已经被捕获了。  
 除非你特殊声明，只有变量的值被捕获了。这意味着如果你在定义`block`之后和调用它之前改变了这个值，像这样：
 
 ```
@@ -120,6 +120,162 @@ Integer is: 42
 这也意味着，`block`不可能改变原来变量的值，甚至不能改变捕获到的值（因为被捕获的值是被储存为`const`类型的）。
 
 ####使用__block变量去共享储存
-如果你需要在一个`block`里去改变捕获到的值，你可以在初始变量声明之前添加`__block`修饰。这个意味着
+如果你需要在一个`block`里去改变捕获到的值，你可以在初始变量声明之前添加`__block`修饰。这表示，这个变量存在于一块被**这变量本身存在的作用域**和**任何存在于这个作用域的`block`**两者共享的内存中。  
+举个例子，你就可以像这样重写之前的例子：
 
+```
+    __block int anInteger = 42;
+ 
+    void (^testBlock)(void) = ^{
+        NSLog(@"Integer is: %i", anInteger);
+    };
+ 
+    anInteger = 84;
+ 
+    testBlock();
+```
+
+因为`anInterger`是在声明时被`__block`修饰的变量，他的储存空间将与`block`声明共享。这意味着打印的日志将为：
+
+```
+Integer is: 84
+```
+这也就意味着`block`可以改变原来的值，像这样：
+
+```
+    __block int anInteger = 42;
+ 
+    void (^testBlock)(void) = ^{
+        NSLog(@"Integer is: %i", anInteger);
+        anInteger = 100;
+    };
+ 
+    testBlock();
+    NSLog(@"Value of original variable is now: %i", anInteger);
+```
+
+这次打印的结果将是这样：
+
+```
+Integer is: 42
+Value of original variable is now: 100
+```
+
+###将Blocks作为参数传递给方法或函数
+在本章中，之前的所有例子都是在定义之后直接调用了一个`block`。在实际应用中，我们经常会把`block`传递给一些方法或函数去在其他地方被 *远程调用invocation* 。举个例子，你也许会利用 *Grand Central Dispatch* 在后台调用一个`block`。或者，不断地调用一个代表单个重复任务的`block`，比如遍历一个集合。*并发性concurrency* 和 *枚举 enumeration* 将会在本章的之后内容讲到。   
+`blocks`有时候也会用于回调——定义一段当某一个任务完成时才会被调用的代码。举个例子，你的应用可能会通过创造一个执行复杂工作的对象来响应用户行为，比如从一个web服务器请求一些信息。因为这个工作可能要花费很长时间，所以你需要在工作进行的时候显示一个进度条，工作完成的时候就把进度条隐藏起来。    
+用 *委托* 是可以实现这个功能的：你需要（在工作中）创建一个合适的*委托协议 delegate protocal* ，并实现要求的方法（如显示和关闭进度条），让你的对象成为这个工作的委托人。 接下来就等待工作结束时你对象中实现的委托方法被调用。
+>注：这里指的是在执行复杂任务的对象A中定义一个委托，对象A在进行复杂任务时中会分别调用委托中的方法，当然这些方法是由你的对象B实现的，也就是说对象A仅决定这些方法调用的时机，而不决定做什么（因为委托给B对象做了），而你的对象B则决定做什么（比如打开或关闭进度条），详情请参考前文使用委托和代理Working with Protocols。
+
+但是使用`block`会使这件事情更加简单，因为你可以在你初始化工作的时候才定义这个回调行为，像这样：
+
+```
+- (IBAction)fetchRemoteInformation:(id)sender {
+    [self showProgressIndicator];
+ 
+    XYZWebTask *task = ...
+ 
+    [task beginTaskWithCallbackBlock:^{
+        [self hideProgressIndicator];
+    }];
+}
+```
+
+这个例子调用了一个方法去显示一个进度条，接着创建了一个任务并且命令它开始执行。这个回调`block`规定了当任务完成的时候执行的代码；在这个情形下，它只调用了一个方法去关闭进度条。我们注意到，为了能够调用`hideProgressIndicator`方法，这个回调`block`捕获了`self`对象。当你捕获`self`的时候，一定要小心，因为你极容易创造了一个 *强引用循环strong reference cycle* ，关于如何避免强循环引用的内容会在之后详细描述。  
+使用`block`可以让你清晰地看出工作前后发生了什么，这提升了代码的可读性，因为你不需要在委托方法中不断跳转去搞清楚什么将要发生。  
+声明一个`beginTaskWithCallbackBlock:`方法这么写：
+
+```
+- (void)beginTaskWithCallbackBlock:(void (^)(void))callbackBlock;
+```
+
+` (void (^)(void))`规定了方法接受的参数是一个不接受任何参数同时也不返回任何参数的`block`. 在这个方法的实现中，你可以像平时调用一个`block`一样去调用这个传入的`block`参数：
+
+```
+- (void)beginTaskWithCallbackBlock:(void (^)(void))callbackBlock {
+    ...
+    callbackBlock();
+}
+```
+
+一个接受带参数`block`的方法这么写。
+
+```
+- (void)doSomethingWithBlock:(void (^)(double, double))block {
+    ...
+    block(21.0, 2.0);
+}
+```
+
+###Block应该作为一个方法的最后一个参数
+最好一个方法只接受至多一个`block`参数。如果方法也接受其他不是`block`的参数，`block`应该成为最后一个参数。
+
+```
+- (void)beginTaskWithName:(NSString *)name completion:(void(^)(void))callback;
+```
+
+这样写，当你内嵌形式去定义一个`block`时，会让你的方法调用更加容易看懂：
+
+```
+[self beginTaskWithName:@"MyTask" completion:^{
+        NSLog(@"The task is complete");
+    }];
+```
+
+##使用类型定义（Type Definition）简化定义Block的语法
+如果你需要定义多个拥有相同signature的`block`，那么就为了这个signature定义一个你自己的类型吧。
+举个例子，你可以为一个既不接受数值也不返回数值的`block`定义一个类型，就像这样：
+
+```
+typedef void (^XYZSimpleBlock)(void);
+```
+
+你可以使用在创建一个变量或者限定方法接受的参数类型时候使用这个自定义类型：
+
+```
+    XYZSimpleBlock anotherBlock = ^{
+        ...
+    };
+```
+
+```
+- (void)beginFetchWithCallbackBlock:(XYZSimpleBlock)callbackBlock {
+    ...
+    callbackBlock();
+}
+```
+
+当你使用接受一个`block`或者返回一个`block`的`block`的时候，自定义类型就非常有用了。看看下面这个例子：
+
+```
+void (^(^complexBlock)(void (^)(void)))(void) = ^ (void (^aBlock)(void)) {
+    ...
+    return ^{
+        ...
+    };
+};
+```
+
+这个`complexBlock`变量引用了一个接受另一个`block`作为参数并且返回另一个`block`的`block`。  
+那么用自定义类型来重写这段代码就更容易看清了：
+
+```
+XYZSimpleBlock (^betterBlock)(XYZSimpleBlock) = ^ (XYZSimpleBlock aBlock) {
+    ...
+    return ^{
+        ...
+    };
+};
+```
+
+##给对象添加block属性
+给对象添加一个Block属性和定义一个变量非常类似：
+
+```
+@interface XYZObject : NSObject
+@property (copy) void (^blockProperty)(void);
+@end
+```
+
+>注意：因为一个`block`需要被复制一份去保持它的赋予`block`属性一个`copy`*附加属性*，
 
