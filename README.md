@@ -5,27 +5,27 @@ This is a Chinese version of Programming with Objective-C that is translated by 
 - Chibaibuki XiangfuGoh
 - Caoxian HaoxianChan
 - Bomlsy SiyuLiao 
+- tinoryj YanjingRen
+- yaoyai JianyunWu
 
-# 须知
-##版本控制
-| 版本 | 修改者 | 时间 |
-| --- | --- | --- |
-| 0.1 | Chibaibuki | 2016-09-22  |
+
+##测试版本V0.1
+本项目欢迎提出意见，如对任何章节有意见或疑问请发送邮件至chibaibuki@outlook.com，我们会在两个工日内对问题进行回复并可能修改相应章节。
 ##章节认领情况
 [原文地址](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html#//apple_ref/doc/uid/TP40011210-CH1-SW1)
 
 | 章节 | 认领者  |  
 | --- | --- | 
-| Introduction-介绍 | yaoyaoi |
-|   Defining-Classes-定义类|caoxian|
+| Introduction-介绍 | yaoyai|
+|   Defining-Classes-定义类|Caoxian|
 |Working-with-Objects-对象的使用|Bomlsy|
 |Encapsulating-Data-数据的封装|Chibaibuki|
-|Customizing-Existing-Classes-定制已有的类||
-|Working-with-Protocols-协议的使用||
-|Values-and-Collections-值与集合类型||
+|Customizing-Existing-Classes-定制已有的类|Caoxian|
+|Working-with-Protocols-协议的使用|tinoryj|
+|Values-and-Collections-值与集合类型|tinoryj|
 |Working-with-Blocks-使用块|Chibaibuki|
-|Dealing-with-Errors-错误处理||
-|Conventions-命名规则||
+|Dealing-with-Errors-错误处理|Chibaibuki|
+|Conventions-命名规则|Bomlsy|
 
 ##流程
 
