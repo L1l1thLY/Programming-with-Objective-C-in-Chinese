@@ -20,7 +20,7 @@ This is a Chinese version of Programming with Objective-C that is translated by 
 | Introduction-介绍 | yaoyai|
 |   Defining-Classes-定义类|Caoxian|
 |Working-with-Objects-对象的使用|Bomlsy|
-|Encapsulating-Data-数据的封装|Chibaibuki|
+|Encapsulating-Data-数据的封装|Lilith|
 |Customizing-Existing-Classes-定制已有的类|Caoxian|
 |Working-with-Protocols-协议的使用|tinoryj|
 |Values-and-Collections-值与集合类型|tinoryj|
