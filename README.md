@@ -3,6 +3,7 @@
 This is a Chinese version of Programming with Objective-C that is translated by Innovation Studio iOS Group in USETC. 苹果开发者平台Objective-C文档的中文翻译版本。
 ##贡献者:
 - Chibaibuki XiangfuGoh
+- Lilith FengChu
 - Caoxian HaoxianChan
 - Bomlsy SiyuLiao 
 - tinoryj YanjingRen
